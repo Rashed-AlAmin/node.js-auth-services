@@ -1,9 +1,11 @@
 const express=require('express')
 const router=express.Router()
-const {hello,addNew,deleteUser,registerUser,loginUser}=require('../controller/auth-controller')
+const {hello,addNew,deleteUser,registerUser,loginUser,changePassword}=require('../controller/auth-controller')
+const authMiddleware=require('../middleware/auth-middleware')
 router.get('/hello',hello)
 router.post('/add',addNew)
 router.delete('/delete/:id',deleteUser)
 router.post('/register',registerUser)
 router.post('/login',loginUser)
+router.post('/change-password',authMiddleware,changePassword)
 module.exports=router;
