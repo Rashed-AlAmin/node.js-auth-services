@@ -1,6 +1,7 @@
 const Image=require('../models/image')
 const {uploadToCloudinary}=require('../helper/cloudinaryHelper')
 const fs=require('fs')
+const { image } = require('../config/cloudinary')
 
 const uploadImageController= async (req, res)=>{
     try{
@@ -43,7 +44,13 @@ const uploadImageController= async (req, res)=>{
 
 const fetchImageController= async (req, res)=>{
     try{
-
+        const images=await Image.find({})
+        if(images){
+            res.status(200).json({
+            success:true,
+            data:images
+            })
+        }
     }catch(e){
         console.log(e)
         res.status(500).json({
@@ -52,4 +59,4 @@ const fetchImageController= async (req, res)=>{
         })
     }
 }
-module.exports=uploadImageController
+module.exports={uploadImageController,fetchImageController}
