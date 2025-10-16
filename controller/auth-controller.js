@@ -115,6 +115,7 @@ const loginUser=async (req,res)=>{
   }
 }
 const changePassword=async(req,res)=>{
+  try{
   const userId=req.userInfo.userId;
   const {oldPassword,newPassword}=req.body;
   const user=await User.findById(userId)
@@ -142,5 +143,11 @@ const changePassword=async(req,res)=>{
     success:true,
     message:'password changed successfully'
   })
+}catch(e){
+  console.log(e)
+  res.status(500).json({
+    message:'something is wrong'
+  })
+}
 }
 module.exports={hello,addNew,deleteUser,registerUser,loginUser,changePassword}

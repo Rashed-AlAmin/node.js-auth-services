@@ -1,7 +1,8 @@
 const Image=require('../models/image')
 const {uploadToCloudinary}=require('../helper/cloudinaryHelper')
 const fs=require('fs')
-const { image } = require('../config/cloudinary')
+const cloudinary=require('../config/cloudinary')
+
 
 const uploadImageController= async (req, res)=>{
     try{
@@ -59,4 +60,39 @@ const fetchImageController= async (req, res)=>{
         })
     }
 }
-module.exports={uploadImageController,fetchImageController}
+
+const deleteImageController=async (req,res)=>{
+    try{
+        const idOfImageToBeDeleted= req.params.id;
+        const userId=req.userInfo.userId;
+        const image=await Image.findById(idOfImageToBeDeleted)
+        if(!image){
+            return res.status(404).json({
+                success:false,
+                message:'image could not be found'
+            })
+        }
+        if(image.uploadedBy.toString()!==userId){
+            return res.status(400).json({
+                success:false,
+                message:'cannot delete the image coz you did not upload it'
+            })
+        }
+        //delete picture from cloudinary
+        await cloudinary.uploader.destroy(image.publicId)
+        //delete from mongodb database
+        await Image.findByIdAndDelete(idOfImageToBeDeleted)
+        res.status(200).json({
+            success:true,
+            message:'image deleted successfully'
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).json({
+            success:false,
+            message:'something went wrong'
+        })
+    }
+}
+
+module.exports={uploadImageController,fetchImageController,deleteImageController}
