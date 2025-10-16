@@ -3,37 +3,37 @@ const bcrypt=require('bcryptjs')
 const User=require('../models/user')
 const jwt=require('jsonwebtoken')
 
-const hello=async (req,res)=>{
-  res.status(200).json({
-    message:'hello world'
-  })
-}
+// const hello=async (req,res)=>{
+//   res.status(200).json({
+//     message:'hello world'
+//   })
+// }
 
-const addNew=async (req,res)=>{
-  const addVal=req.body;
-  const newUser=await User.create(addVal)
-  if(!newUser){
-    res.status(404).json('cannot add user')
-  }else{
-    res.status(200).json({
-      success:true,
-      message:'added',
-      data:newUser
-    })
-  }
-}
-const deleteUser=async (req,res)=>{
-  const getId=req.params.id;
-  const deletedUser=await User.findByIdAndDelete(getId)
-  if(!deleteUser){
-    res.json('cannot delete')
-  }else{
-    res.status(200).json({
-      message:'success',
-      data:deletedUser
-    })
-  }
-}
+// const addNew=async (req,res)=>{
+//   const addVal=req.body;
+//   const newUser=await User.create(addVal)
+//   if(!newUser){
+//     res.status(404).json('cannot add user')
+//   }else{
+//     res.status(200).json({
+//       success:true,
+//       message:'added',
+//       data:newUser
+//     })
+//   }
+// }
+// const deleteUser=async (req,res)=>{
+//   const getId=req.params.id;
+//   const deletedUser=await User.findByIdAndDelete(getId)
+//   if(!deleteUser){
+//     res.json('cannot delete')
+//   }else{
+//     res.status(200).json({
+//       message:'success',
+//       data:deletedUser
+//     })
+//   }
+// }
 
 const registerUser=async (req,res)=>{
   try{
@@ -150,4 +150,4 @@ const changePassword=async(req,res)=>{
   })
 }
 }
-module.exports={hello,addNew,deleteUser,registerUser,loginUser,changePassword}
+module.exports={registerUser,loginUser,changePassword}
